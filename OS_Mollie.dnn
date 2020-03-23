@@ -30,7 +30,12 @@
 				</component>
 				<component type="Assembly">
           <assemblies>
-						<assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Mollie.Api.dll</name>
+              <sourceFileName>Mollie.Api.dll</sourceFileName>
+            </assembly>
+            <assembly>
 							<path>bin</path>
 							<name>OS_Mollie.dll</name>
 							<sourceFileName>OS_Mollie.dll</sourceFileName>
