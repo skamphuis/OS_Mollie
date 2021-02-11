@@ -270,6 +270,7 @@ namespace OS_Mollie
             if (paymentok)
             {
                 info.SetXmlProperty("genxml/ordernumber", orderData.OrderNumber);
+                info.SetXmlProperty("genxml/orderid", orderData.PurchaseInfo.ItemID.ToString());
                 return NBrightBuyUtils.RazorTemplRender(displaytemplate, 0, "", info, "/DesktopModules/NBright/OS_Mollie", "config", Utils.GetCurrentCulture(), passSettings);
             }
             else
