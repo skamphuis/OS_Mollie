@@ -32,18 +32,22 @@ namespace OS_Mollie
 
             var strOut = "OS_Mollie Ajax Error";
 
-            // NOTE: The paramCmd MUST start with the plugin ref. in lowercase. (links ajax provider to cmd)
-            switch (paramCmd)
+            if (PluginUtils.CheckPluginSecurity(PortalSettings.Current.PortalId, "os_mollie"))
             {
-                case "os_mollie_savesettings":
-                    strOut = objCtrl.SavePluginSinglePageData(context);
-                    break;
-                case "os_mollie_selectlang":
-                    objCtrl.SavePluginSinglePageData(context);
-                    var nextlang = ajaxInfo.GetXmlProperty("genxml/hidden/nextlang");
-                    var info = objCtrl.GetPluginSinglePageData("OS_Molliepayment", "OS_MolliePAYMENT", nextlang);
-                    strOut = NBrightBuyUtils.RazorTemplRender("settingsfields.cshtml", 0, "", info, "/DesktopModules/NBright/OS_Mollie", "config", nextlang, StoreSettings.Current.Settings());
-                    break;
+                // NOTE: The paramCmd MUST start with the plugin ref. in lowercase. (links ajax provider to cmd)
+                switch (paramCmd)
+                {
+                    case "os_mollie_savesettings":
+                        strOut = objCtrl.SavePluginSinglePageData(context);
+                        break;
+                    case "os_mollie_selectlang":
+                        objCtrl.SavePluginSinglePageData(context);
+                        var nextlang = ajaxInfo.GetXmlProperty("genxml/hidden/nextlang");
+                        var info = objCtrl.GetPluginSinglePageData("OS_Molliepayment", "OS_MolliePAYMENT", nextlang);
+                        strOut = NBrightBuyUtils.RazorTemplRender("settingsfields.cshtml", 0, "", info, "/DesktopModules/NBright/OS_Mollie", "config", nextlang,
+                            StoreSettings.Current.Settings());
+                        break;
+                }
             }
 
             return strOut;
