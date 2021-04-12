@@ -168,4 +168,10 @@
   <data name="rtntitlevalue.Text" xml:space="preserve">
     <value>Payment by Secure Banking</value>
   </data>
+  <data name="IdealOnlyLabel.Text" xml:space="preserve">
+    <value>iDeal only</value>
+  </data>
+  <data name="IdealOnlyMessage.Text" xml:space="preserve">
+    <value>Skip payment method selection at Mollie and go straight to iDeal bank selection instead.</value>
+  </data>
 </root>

@@ -60,6 +60,12 @@ namespace OS_Mollie
 
                 string cartDesc = info.GetXmlProperty("genxml/textbox/cartdescription");
                 var ApiKey = info.GetXmlProperty("genxml/textbox/key");
+                var idealOnly = true; // default to previous behaviour
+                if (info.XMLDoc.SelectSingleNode("genxml/checkbox/idealonly") != null)
+                {
+                    // take the value from the settings, if it exists
+                    idealOnly = info.GetXmlPropertyBool("genxml/checkbox/idealonly");
+                }
                 var notifyUrl = Utils.ToAbsoluteUrl("/DesktopModules/NBright/OS_Mollie/notify.ashx");
                 var returnUrl = Globals.NavigateURL(StoreSettings.Current.PaymentTabId, "");
 
@@ -81,62 +87,40 @@ namespace OS_Mollie
                 var totalString = decimal.Parse((appliedtotal - alreadypaid).ToString("0.00"));
                 var totalPrijsString2 = totalString.ToString(specifier, culture).Replace('€', ' ').Trim();
 
-                IPaymentClient paymentClient = new PaymentClient(ApiKey);
-                IdealPaymentRequest paymentRequestIdeal = new IdealPaymentRequest()
+                PaymentResponse result = null;
+                if (idealOnly)
                 {
-                    Amount = new Amount(Currency.EUR, totalPrijsString2),
-                    Description = "Bestelling ID: " + " " + productOrderNumber + " " + cartDesc,
-                    RedirectUrl = returnUrl + "/orderid/" + ItemId,
-                    WebhookUrl = notifyUrl + "?orderid=" + ItemId,
-                    Locale = Locale.nl_NL,
-                    Method = PaymentMethod.Ideal
-                };
+                    IPaymentClient paymentClient = new PaymentClient(ApiKey);
+                    IdealPaymentRequest paymentRequestIdeal = new IdealPaymentRequest()
+                    {
+                        Amount = new Amount(Currency.EUR, totalPrijsString2),
+                        Description = "Bestelling ID: " + " " + productOrderNumber + " " + cartDesc,
+                        RedirectUrl = returnUrl + "/orderid/" + ItemId,
+                        WebhookUrl = notifyUrl + "?orderid=" + ItemId,
+                        Locale = Locale.nl_NL,
+                        Method = PaymentMethod.Ideal
+                    };
 
-                var task = Task.Run(async () => (IdealPaymentResponse)await paymentClient.CreatePaymentAsync(paymentRequestIdeal));
-                task.Wait();
-                IdealPaymentResponse result = task.Result;
+                    var task = Task.Run(async () => (IdealPaymentResponse)await paymentClient.CreatePaymentAsync(paymentRequestIdeal));
+                    task.Wait();
+                    result = task.Result;
+                }
+                else
+                {
+                    IPaymentClient paymentClient = new PaymentClient(ApiKey);
+                    PaymentRequest paymentRequest = new PaymentRequest()
+                    {
+                        Amount = new Amount(Currency.EUR, totalPrijsString2),
+                        Description = "Bestelling ID: " + " " + productOrderNumber + " " + cartDesc,
+                        RedirectUrl = returnUrl + "/orderid/" + ItemId,
+                        WebhookUrl = notifyUrl + "?orderid=" + ItemId,
+                        Locale = Locale.nl_NL,
+                    };
 
-                //objEventLog.AddLog("resquest Amount.Currency match: ", result.Amount.Currency, PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
-
-                //debug stuff
-                //try
-                //{
-                //    if (paymentRequestIdeal.Amount.Currency == result.Amount.Currency)
-                //    {
-                //        objEventLog.AddLog("resquest Amount.Currency match: ", result.Amount.Currency, PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
-                //    }
-
-                //    if (paymentRequestIdeal.Amount.Value == result.Amount.Value)
-                //    {
-                //        objEventLog.AddLog("resquest Amount.Value match: ", result.Amount.Value, PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
-                //    }
-
-                //    if (paymentRequestIdeal.Description == result.Description)
-                //    {
-                //        objEventLog.AddLog("resquest Description match: ", result.Description, PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
-                //    }
-
-                //    if (paymentRequestIdeal.RedirectUrl == result.RedirectUrl)
-                //    {
-                //        objEventLog.AddLog("resquest RedirectUrl match: ", result.RedirectUrl, PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
-                //    }
-
-                //    if (paymentRequestIdeal.Locale == result.Locale)
-                //    {
-                //        objEventLog.AddLog("resquest Locale match: ", result.Locale, PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
-                //    }
-
-                //    objEventLog.AddLog("resquest Amount OPenstore match: ", totalPrijsString2, PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
-
-                //    objEventLog.AddLog("Return Status (result.Status.ToString) : ", result.Status.ToString(), PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
-                //    objEventLog.AddLog("Return Status (result.Status.Value.ToString) : ", result.Status.Value.ToString(), PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
-
-                //}
-                //catch (Exception)
-                //{
-
-                //    throw;
-                //}
+                    var task = Task.Run(async () => await paymentClient.CreatePaymentAsync(paymentRequest));
+                    task.Wait();
+                    result = task.Result;
+                }
 
                 orderData.PaymentPassKey = result.Id;
                 orderData.OrderStatus = "020";

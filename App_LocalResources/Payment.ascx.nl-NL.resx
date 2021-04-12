@@ -168,4 +168,10 @@
   <data name="OS_Molliesettings.Text" xml:space="preserve">
     <value>Mollie instellingen</value>
   </data>
+  <data name="IdealOnlyLabel.Text" xml:space="preserve">
+    <value>Alleen iDeal</value>
+  </data>
+  <data name="IdealOnlyMessage.Text" xml:space="preserve">
+    <value>Keuze voor betaalmethode bij Mollie overslaan en direct het bank-selectie scherm van iDeal tonen.</value>
+  </data>
 </root>
