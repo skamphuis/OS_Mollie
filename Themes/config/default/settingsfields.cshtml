@@ -119,10 +119,10 @@ var info = (NBrightInfo)Model.List.First();
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">iDeal only</label>
+            <label class="col-sm-2 control-label">@ResourceKey("Payment.IdealOnlyLabel", info.Lang)</label>
             <div class="col-sm-5">
                 <div class="dnnFormItem">
-                    @CheckBox(info, "genxml/checkbox/idealonly", "Skip payment method selection at Mollie and go straight to iDeal bank selection instead.")
+                    @CheckBox(info, "genxml/checkbox/idealonly", ResourceKey("Payment.IdealOnlyMessage", info.Lang).ToString(), "", true)
                 </div>
             </div>
         </div>
