@@ -1,3 +1,4 @@
 ﻿Open Store Mollie Payment Gateway
 ==========================
-By Bond for websolutions.
+Initially made by Bond for websolutions.
+Contributions by 40Fingers.

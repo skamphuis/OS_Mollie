@@ -53,7 +53,7 @@ namespace OS_Mollie.DNN.NBrightStore
                     task.Wait();
                     PaymentResponse paymentClientResult = task.Result;
 
-                    objEventLog.AddLog("Mollie Webhook call for orderid: " + orderid  , "Status: " + paymentClientResult.Status.Value.ToString(), portalsettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
+                    objEventLog.AddLog("Mollie Webhook call for orderid: " + orderid  , "Status: " + paymentClientResult.Status, portalsettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
 
                     //Waiting for Payment 060
                     //Payment OK 040
