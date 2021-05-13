@@ -97,9 +97,10 @@
   </Target>
   <Target Name="CopyAssemblies">
     <!-- Copy assemblies and Debug Info to DNN Bin Dir -->
-	<Message  Text="Copy assemblies and Debug Info to DNN Bin Dir" Importance="high"></Message>
+	<Message  Text="Copy assemblies and Debug Info from $(OutputPath) to DNN Bin Dir $(MSBuildDnnBinPath)" Importance="high"></Message>
     <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll;
-                       $(OutputPath)$(AssemblyName).pdb;" 
+                       $(OutputPath)$(AssemblyName).pdb;
+                       $(OutputPath)Mollie.Api.dll;" 
           DestinationFolder="$(MSBuildDnnBinPath)"/>
 </Target>
   <Target Name="PackageAndDeploy">
