@@ -143,12 +143,15 @@ var info = (NBrightInfo)Model.List.First();
                 </div>
             </div>
         </div>
-        <hr />
-        <div class="form-group">
-            <label class="col-sm-2 control-label"></label>
-            <div class="col-sm-3">
-                @info.GetXmlProperty("genxml/debugmsg")
+        @if (info.GetXmlPropertyBool("genxml/checkbox/debugmode"))
+        {
+            <hr />
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-sm-3">
+                    @info.GetXmlProperty("genxml/debugmsg")
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>

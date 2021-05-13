@@ -189,7 +189,7 @@ namespace OS_Mollie
                 task.Wait();
                 PaymentResponse paymentClientResult = task.Result;
 
-                objEventLog.AddLog("Mollie ProcessPaymentReturn", "Status: " + paymentClientResult.Status.Value.ToString() + " OrderId:" + orderid + " Mollie Id: " + orderData.PaymentPassKey, portalsettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
+                objEventLog.AddLog("Mollie ProcessPaymentReturn", "Status: " + paymentClientResult.Status + " OrderId:" + orderid + " Mollie Id: " + orderData.PaymentPassKey, portalsettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
 
                 switch (paymentClientResult.Status.ToString().ToLower())
                 {
