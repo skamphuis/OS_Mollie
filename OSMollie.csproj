@@ -112,9 +112,6 @@
     <Content Include="Themes\config\img\logo2.png" />
     <Content Include="Themes\config\js\OSMollie.js" />
     <None Include="app.config" />
-    <None Include="BuildScripts\build.bat" />
-    <None Include="BuildScripts\ModulePackage.targets" />
-    <None Include="BuildScripts\MSBuild.Community.Tasks.Targets" />
     <None Include="OS_Mollie.dnn" />
     <None Include="packages.config" />
     <None Include="Themes\config\default\payment_ok.cshtml" />
