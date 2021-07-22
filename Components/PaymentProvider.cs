@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using DotNetNuke.Common;
@@ -140,16 +141,20 @@ namespace OS_Mollie
                 }
                 catch (Exception ex)
                 {
-                    // rollback transaction
-                    orderData.PurchaseInfo.SetXmlProperty("genxml/paymenterror", "<div>ERROR: Invalid payment data </div><div>" + ex + "</div>");
-                    orderData.PaymentFail("010");
-                    //objEventLog.AddLog("Betaling aanmaken mislukt: ", "ID: " + result.Id + " Bedrag:" + result.Amount.Currency + " ItemId: " + ItemId, PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
+                    if (!ex.ToString().StartsWith("System.Threading.ThreadAbortException")) // we expect a thread abort from the End response.
+                    {
+                        // rollback transaction
+                        orderData.PurchaseInfo.SetXmlProperty("genxml/paymenterror", "<div>ERROR: Invalid payment data </div><div>" + ex + "</div>");
+                        orderData.PaymentFail("010");
+                        //objEventLog.AddLog("Betaling aanmaken mislukt: ", "ID: " + result.Id + " Bedrag:" + result.Amount.Currency + " ItemId: " + ItemId, PortalSettings, -1, EventLogController.EventLogType.ADMIN_ALERT);
 
-                    var param = new string[3];
-                    param[0] = "orderid=" + orderData.PurchaseInfo.ItemID.ToString("");
-                    param[1] = "status=0";
-                    return Globals.NavigateURL(StoreSettings.Current.PaymentTabId, "", param);
+                        var param = new string[3];
+                        param[0] = "orderid=" + orderData.PurchaseInfo.ItemID.ToString("");
+                        param[1] = "status=0";
+                        return Globals.NavigateURL(StoreSettings.Current.PaymentTabId, "", param);
+                    }
                 }
+
                 try
                 {
                     HttpContext.Current.Response.End();

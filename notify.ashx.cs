@@ -80,7 +80,7 @@ namespace OS_Mollie.DNN.NBrightStore
                             break;
                         default:
                             orderData.PaymentFail("010");
-                            rtnMsg = "KO";
+                            rtnMsg = "OK";
                             break;
                     }
                 }
