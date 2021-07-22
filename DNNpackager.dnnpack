@@ -1,5 +1,5 @@
 <root>
-	<version>1.0.0</version>
+	<version>1.4.1</version>
   <websitedestrelpath>\DesktopModules\NBright\OS_Mollie</websitedestrelpath>
   <websitedestbinrelpath>\bin</websitedestbinrelpath>
 	<!-- Include only files that match the regular expression -->
@@ -19,6 +19,7 @@
   <file include='false'>
   </file>
   <file include='true'>
+    <value>\Installation\pluginos_mollie.xml</value>
   </file>
 	<assembly>
 		<value>OS_Mollie.dll</value>

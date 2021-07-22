@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="OS_Mollie" type="Module" version="1.4.0">
+		<package name="OS_Mollie" type="Module" version="1.4.1">
 			<friendlyName>OS_Mollie</friendlyName>
 			<description>Mollie Payment provider for Open-Store</description>
       <iconFile>~/DesktopModules/NBright/NBrightBuy/icon-openstore.png</iconFile>
