@@ -56,15 +56,15 @@
       <HintPath>packages\Mollie.Api.2.1.0.6\lib\net45\Mollie.Api.dll</HintPath>
     </Reference>
     <Reference Include="NBrightBuy">
-      <HintPath>..\..\..\bin\NBrightBuy.dll</HintPath>
+      <HintPath>_external\NBrightBuy.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NBrightCore">
-      <HintPath>..\..\..\bin\NBrightCore.dll</HintPath>
+      <HintPath>_external\NBrightCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NBrightDNN">
-      <HintPath>..\..\..\bin\NBrightDNN.dll</HintPath>
+      <HintPath>_external\NBrightDNN.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -73,7 +73,7 @@
     </Reference>
     <Reference Include="RazorEngine, Version=3.7.7.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\RazorEngine.dll</HintPath>
+      <HintPath>_external\RazorEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -137,9 +137,8 @@
     <Folder Include="Themes\config\resx\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="BuildScripts\ModulePackage.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="PackageAndDeploy">
-  </Target>
+  <!-- Target Name="AfterBuild" DependsOnTargets="PackageAndDeploy">
+  </Target -->
   <Import Project="packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -147,4 +146,13 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>REM ** Copy to sub-bin folder, so install package can be built from them **
+copy "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(ProjectDir)..\..\bin\$(TargetFileName)"
+copy "$(ProjectDir)$(OutDir)$(AssemblyName).pdb" "$(ProjectDir)..\..\bin\$(AssemblyName).pdb"
+
+
+DNNpackager.exe  $(ProjectDir) $(ProjectDir)$(OutDir) $(ConfigurationName)
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>
